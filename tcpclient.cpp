@@ -25,7 +25,27 @@ QDataStream &operator <<(QDataStream &in, ServiceHeader &data){
     return in;
 };
 
+QDataStream &operator >>(QDataStream &out, StatServer &data){
 
+    out >> data.incBytes;  //принято байт
+    out >> data.sendBytes; //передано байт
+    out >> data.revPck;    //принто пакетов
+    out >> data.sendPck;   //передано пакетов
+    out >> data.workTime;  //Время работы сервера секунд
+    out >> data.clients;   //Количество подключенных клиентов
+    return out;
+};
+
+//QDataStream &operator <<(QDataStream &in, StatServer &data){
+
+//    in << data.incBytes;  //принято байт
+//    in << data.sendBytes; //передано байт
+//    in << data.revPck;    //принто пакетов
+//    in << data.sendPck;   //передано пакетов
+//    in << data.workTime;  //Время работы сервера секунд
+//    in << data.clients;   //Количество подключенных клиентов
+//    return in;
+//};
 
 /*
  * Поскольку мы являемся клиентом, инициализацию сокета
@@ -36,17 +56,14 @@ TCPclient::TCPclient(QObject *parent) : QObject(parent)
 {
     socket = new QTcpSocket(this);
     connect(socket, QTcpSocket::connected, this, [&]{
-        timer->start();
         emit sig_connectStatus(STATUS_SUCCES);
     });
     connect(socket, QTcpSocket::errorOccurred, this, [&]{
         emit sig_connectStatus(ERR_CONNECT_TO_HOST);
     } );
     connect(socket, QTcpSocket::disconnected, this, &TCPclient::sig_Disconnected);
-    //connect(socket, QTcpSocket::disconnected, this, [&]{ stats.clients--;});
-    connect(socket, QTcpSocket::readyRead, this, &TCPclient::ReadyReed);
 
-    timer = new QElapsedTimer();
+    connect(socket, QTcpSocket::readyRead, this, &TCPclient::ReadyReed);
 
 }
 
@@ -172,7 +189,15 @@ void TCPclient::ProcessingData(ServiceHeader header, QDataStream &stream)
         }
 //        case GET_SIZE:
         case GET_STAT:{
-            stats.workTime = timer->elapsed();
+
+            StatServer stats;
+            stream >> stats;
+//            stream >> stats.incBytes;
+//            stream >> stats.sendBytes;
+//            stream >> stats.revPck;
+//            stream >> stats.sendPck;
+//            stream >> stats.workTime;
+//            stream >> stats.clients;
             emit sig_sendStat(stats);
             break;
         }

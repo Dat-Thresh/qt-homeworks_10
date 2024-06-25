@@ -56,7 +56,7 @@ struct StatServer{
     uint32_t sendBytes; //передано байт
     uint32_t revPck;    //принто пакетов
     uint32_t sendPck;   //передано пакетов
-    uint16_t workTime;  //Время работы сервера секунд
+    uint32_t workTime;  //Время работы сервера секунд
     uint32_t clients;   //Количество подключенных клиентов
 };
 

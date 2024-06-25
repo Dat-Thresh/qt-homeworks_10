@@ -65,18 +65,17 @@ void MainWindow::SetDataReply(QString replyString)
 }
 void MainWindow::DisplayStat(StatServer stat)
 {
-//    uint32_t incBytes;  //принято байт
-//    uint32_t sendBytes; //передано байт
-//    uint32_t revPck;    //принто пакетов
-//    uint32_t sendPck;   //передано пакетов
-//    uint32_t workTime;  //Время работы сервера секунд
-//    uint32_t clients;   //Количество подключенных клиентов
-     ui->tb_result->append("Принято байт: " + stat.incBytes);
-     ui->tb_result->append("Передано байт: " + stat.sendBytes);
-     ui->tb_result->append("Принято пакетов: " + stat.revPck);
-     ui->tb_result->append("Передано пакетов: " + stat.sendPck);
-     ui->tb_result->append(QString("Время работы сервера(сек): %1").arg(stat.workTime / 100));
-     ui->tb_result->append("Кол-во подключенных клиентов: " + stat.clients);
+
+     ui->tb_result->append(QString("Принято байт: %1\n Передано байт: %2\n"
+                                   "Принято пакетов: %3\n Передано пакетов: %4\n"
+                                   "Время работы сервера(сек): %5\n"
+                                   "Кол-во подключенных клиентов: %6\n")
+                           .arg(stat.incBytes).arg(stat.sendBytes)
+                           .arg(stat.revPck).arg(stat.sendPck)
+                           .arg(stat.workTime).arg(stat.clients));
+
+
+
 }
 void MainWindow::DisplayError(uint16_t error)
 {

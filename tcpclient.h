@@ -31,8 +31,6 @@ private:
 
 QTcpSocket* socket;
 ServiceHeader servHeader;
-StatServer stats;
-QElapsedTimer* timer;
 
 signals:
     void sig_sendFreeSize(uint32_t);
